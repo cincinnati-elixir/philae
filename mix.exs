@@ -27,6 +27,7 @@ defmodule Philae.Mixfile do
   defp deps do
     [{:httpoison, "~> 0.5"},
      {:poison, "~> 1.2"},
-     {:socket, "~> 0.2.8"}]
+     {:socket, "~> 0.2.8"},
+     {:websocket_client, github: "jeremyong/websocket_client"}]
   end
 end
