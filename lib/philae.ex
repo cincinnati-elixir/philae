@@ -2,33 +2,27 @@ defmodule Philae.WebSocketClient do
   alias Philae.DDP
   @behaviour :websocket_client_handler
 
-  def start do
-    {:ok, socket} = start_link
-    socket
-  end
-
   def start_link() do
-    start_link("ws://localhost:3000/websocket")
+    start_link("ws://localhost:3000/websocket", Philae.DDP)
   end
 
-  def start_link(url) do
-    {:ok, socket} = :websocket_client.start_link(String.to_char_list(url), __MODULE__, [])
-    {:ok, socket}
+  def start_link(url, module) do
+    {:ok, socket} = :websocket_client.start_link(String.to_char_list(url), __MODULE__, [module])
   end
 
-  def init([], conn_state) do
-    {:ok, :websocket_req.get(:socket, conn_state)}
+  def init([module], conn_state) do
+    {:ok, module}
   end
 
-  def websocket_handle({:text, message}, conn_state, socket) do
+  def websocket_handle({:text, message}, conn_state, module) do
     IO.puts "In: #{message}"
-    DDP.handle(self, message)
-    {:ok, socket}
+    apply(module, :handle, [self, message])
+    {:ok, module}
   end
 
-  def websocket_info({:send, msg}, _conn_state, socket) do
-    IO.puts "Out: #{msg}"
-    {:reply, {:text, msg}, socket}
+  def websocket_info({:send, message}, _conn_state, module) do
+    IO.puts "Out: #{message}"
+    {:reply, {:text, message}, module}
   end
 
   def websocket_terminate(_reason, _conn_state, _state) do
