@@ -1,9 +1,9 @@
 Philae
 ======
 
-Land a Elixir app on a Meteor App!
+Land a Elixir app onto a MeteorJs App
 
-You can connect to a Meteor app and subscribe to collections
+Connect to a Meteor app and subscribe to collections
 
 ```iex
 
