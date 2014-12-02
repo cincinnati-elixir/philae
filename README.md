@@ -5,7 +5,7 @@ Land a Elixir app onto a MeteorJs App
 
 Connect to a Meteor app and subscribe to collections
 
-```iex
+```elixir
 
 iex(1)>  {:ok, pid} = Philae.DDP.connect("ws://localhost:3000/websocket")
 In: {"server_id":"0"}
