@@ -1,6 +1,17 @@
 defmodule Philae.DDP do
   use HTTPoison.Base
+  alias Philae.WebSocketClient
   alias Poison, as: JSON
+
+  def connect(url) do
+    {:ok, client_pid} = WebSocketClient.start_link(url, __MODULE__)
+    send_connect_message(client_pid)
+    {:ok, client_pid}
+  end
+
+  def subscribe(client_pid, collection, _message_handler) do
+    sub(client_pid, collection)
+  end
 
   def handle(client_pid, msg) do
     {:ok, message} = JSON.decode(msg)
@@ -22,11 +33,11 @@ defmodule Philae.DDP do
     IO.inspect message
   end
 
-  def connect(client_pid) do
+  def send_connect_message(client_pid) do
     send client_pid, {:send, json!(%{msg: "connect", version: "1", support: ["1","pre2","pre1"]})}
   end
 
-  def subscribe(client_pid, collection) do
+  def sub(client_pid, collection) do
     send client_pid, {:send, json!(%{msg: "sub", name: collection, id: UUID.uuid4})}
   end
 

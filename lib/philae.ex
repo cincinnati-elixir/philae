@@ -1,5 +1,4 @@
 defmodule Philae.WebSocketClient do
-  alias Philae.DDP
   @behaviour :websocket_client_handler
 
   def start_link() do
