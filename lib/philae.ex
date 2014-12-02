@@ -2,13 +2,17 @@ defmodule Philae.WebSocketClient do
   alias Philae.DDP
   @behaviour :websocket_client_handler
 
+  def start do
+    {:ok, socket} = start_link
+    socket
+  end
+
   def start_link() do
     start_link("ws://localhost:3000/websocket")
   end
 
   def start_link(url) do
     {:ok, socket} = :websocket_client.start_link(String.to_char_list(url), __MODULE__, [])
-    DDP.connect(socket)
     {:ok, socket}
   end
 

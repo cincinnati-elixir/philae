@@ -28,6 +28,8 @@ defmodule Philae.Mixfile do
     [{:httpoison, "~> 0.5"},
      {:poison, "~> 1.2"},
      {:socket, "~> 0.2.8"},
-     {:websocket_client, github: "jeremyong/websocket_client"}]
+     {:websocket_client, github: "jeremyong/websocket_client"},
+     { :uuid, "~> 0.1.5" }
+   ]
   end
 end

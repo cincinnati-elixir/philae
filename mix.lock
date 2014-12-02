@@ -6,4 +6,5 @@
   "poison": {:hex, :poison, "1.2.0"},
   "ranch": {:hex, :ranch, "1.0.0"},
   "socket": {:hex, :socket, "0.2.8"},
+  "uuid": {:hex, :uuid, "0.1.5"},
   "websocket_client": {:git, "git://github.com/jeremyong/websocket_client.git", "2b8d9805306d36f22330f432ae6472f1f2625c30", []}}
