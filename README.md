@@ -1,4 +1,4 @@
 Philae
 ======
 
-** TODO: Add description **
+Land a Elixir app on a Meteor App!
