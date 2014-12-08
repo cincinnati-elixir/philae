@@ -22,6 +22,10 @@ defmodule Philae.DDP do
     send_json_message(client_pid, %{msg: "pong"})
   end
 
+  def handle_message(client_pid, %{"msg" => "ping", "id" => id}) do
+    send_json_message(client_pid, %{msg: "pong", id: id})
+  end
+
   def handle_message(client_pid, %{"msg" => "added", "collection" => collection} = message) do
     IO.puts "Got an Add message to collection #{collection}"
     IO.puts "The message was"
