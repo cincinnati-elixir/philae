@@ -17,7 +17,7 @@ defmodule PlayerVoter do
   end
 
   def init([]) do
-    {:ok, client_pid } = Philae.DDP.connect("ws://localhost:3000/websocket", __MODULE__)
+    {:ok, client_pid } = Philae.DDP.connect("ws://localhost:3000/websocket", __MODULE__, self)
     {collection, id} = Philae.DDP.subscribe(client_pid, "players")
     {:ok, %{client_pid: client_pid, subscription_id: id, collection: collection}}
   end
