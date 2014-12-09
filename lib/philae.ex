@@ -1,27 +1,28 @@
 defmodule Philae.WebSocketClient do
   @behaviour :websocket_client_handler
 
+  # TODO: This is a convienence function  - delete it
   def start_link() do
-    start_link("ws://localhost:3000/websocket", Philae.DDP)
+    start_link("ws://localhost:3000/websocket", Philae.DDP, self)
   end
 
-  def start_link(url, module) do
-    {:ok, socket} = :websocket_client.start_link(String.to_char_list(url), __MODULE__, [module])
+  def start_link(url, module, pid) do
+    {:ok, _socket} = :websocket_client.start_link(String.to_char_list(url), __MODULE__, [module, pid])
   end
 
-  def init([module], conn_state) do
-    {:ok, module}
+  def init([module, pid], _conn_state) do
+    {:ok, {module, pid}}
   end
 
-  def websocket_handle({:text, message}, conn_state, module) do
+  def websocket_handle({:text, message}, _conn_state, {module, pid}) do
     IO.puts "In: #{message}"
-    apply(module, :handle, [self, message])
-    {:ok, module}
+    apply(module, :handle, [pid, message])
+    {:ok, {module, pid}}
   end
 
-  def websocket_info({:send, message}, _conn_state, module) do
+  def websocket_info({:send, message}, _conn_state, {module, pid}) do
     IO.puts "Out: #{message}"
-    {:reply, {:text, message}, module}
+    {:reply, {:text, message}, {module, pid}}
   end
 
   def websocket_terminate(_reason, _conn_state, _state) do
