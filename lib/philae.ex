@@ -3,11 +3,6 @@ require Logger
 defmodule Philae.WebSocketClient do
   @behaviour :websocket_client_handler
 
-  # TODO: This is a convienence function  - delete it
-  def start_link() do
-    start_link("ws://localhost:3000/websocket", Philae.DDP, self)
-  end
-
   def start_link(url, module, pid) do
     {:ok, _socket} = :websocket_client.start_link(String.to_char_list(url), __MODULE__, [module, pid])
   end
