@@ -1,3 +1,5 @@
+require Logger
+
 defmodule Philae.DDP do
   use HTTPoison.Base
   alias Philae.WebSocketClient
@@ -50,8 +52,7 @@ defmodule Philae.DDP do
   end
 
   def handle_message(_client_pid, message, _state) do
-    IO.puts "I dont know what to with"
-    IO.inspect message
+    Logger.info "Unhandled message received " <> inspect(message)
   end
 
   def send_connect_message(client_pid) do

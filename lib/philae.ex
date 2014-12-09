@@ -1,3 +1,5 @@
+require Logger
+
 defmodule Philae.WebSocketClient do
   @behaviour :websocket_client_handler
 
@@ -15,13 +17,13 @@ defmodule Philae.WebSocketClient do
   end
 
   def websocket_handle({:text, message}, _conn_state, {module, pid}) do
-    IO.puts "In: #{message}"
+    Logger.info("In: #{message}")
     apply(module, :handle, [pid, message])
     {:ok, {module, pid}}
   end
 
   def websocket_info({:send, message}, _conn_state, {module, pid}) do
-    IO.puts "Out: #{message}"
+    Logger.info("Out: #{message}")
     {:reply, {:text, message}, {module, pid}}
   end
 
