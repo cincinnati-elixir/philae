@@ -4,18 +4,18 @@ defmodule Philae.DDP do
   alias Poison, as: JSON
   use GenServer
 
-  def start_link(url, subscriber_module) do
-    GenServer.start_link(__MODULE__, [url, self, subscriber_module], [])
+  def start_link(url, handler_module, subscriber) do
+    GenServer.start_link(__MODULE__, [url, handler_module, subscriber])
   end
 
-  def init([url, subscriber, subscriber_module]) do
+  def init([url, handler_module, subscriber]) do
     {:ok, client_pid} = WebSocketClient.start_link(url, __MODULE__, self)
     send_connect_message(client_pid)
-    {:ok, %{client: client_pid, subscriber: subscriber, subscriber_module: subscriber_module}}
+    {:ok, %{client: client_pid, subscriber: subscriber, handler_module: handler_module, subscriber: subscriber}}
   end
 
-  def connect(url, subscriber_module) do
-    start_link(url, subscriber_module)
+  def connect(url, handler_module, subscriber) do
+    start_link(url, handler_module, subscriber)
   end
 
   def subscribe(pid, collection) do
@@ -31,9 +31,9 @@ defmodule Philae.DDP do
     {:reply, {collection, id}, state}
   end
 
-  def handle_call({:handle_message, msg}, _from, %{:client => client_pid, :subscriber => subscriber_pid, :subscriber_module => subscriber_module} = state) do
+  def handle_call({:handle_message, msg}, _from, %{:client => client_pid, :subscriber => subscriber, :handler_module => handler_module} = state) do
     {:ok, message} = JSON.decode(msg)
-    handle_message(client_pid, message, {subscriber_pid, subscriber_module})
+    handle_message(client_pid, message, {subscriber, handler_module})
     {:reply, :ok, state}
   end
 
@@ -45,8 +45,8 @@ defmodule Philae.DDP do
     send_json_message(client_pid, %{msg: "pong", id: id})
   end
 
-  def handle_message(_client_pid, %{"msg" => "added"} = message, {subscriber_pid, subscriber_module}) do
-    apply(subscriber_module, :added, [subscriber_pid, message])
+  def handle_message(_client_pid, %{"msg" => "added"} = message, {subscriber, handler_module}) do
+    apply(handler_module, :added, [subscriber, message])
   end
 
   def handle_message(_client_pid, message, _state) do
