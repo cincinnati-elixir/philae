@@ -48,7 +48,7 @@ defmodule Philae.DDP do
   end
 
   def handle_message(_client_pid, %{"msg" => callback} = message, {subscriber, handler_module}) do
-    apply(handler_module, String.to_atom(callback), [subscriber, message])
+    apply(handler_module, String.to_existing_atom(callback), [subscriber, message])
   end
 
   def handle_message(_client_pid, message, _state) do
