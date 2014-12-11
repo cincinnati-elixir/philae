@@ -47,8 +47,8 @@ defmodule Philae.DDP do
     send_json_message(client_pid, %{msg: "pong", id: id})
   end
 
-  def handle_message(_client_pid, %{"msg" => "added"} = message, {subscriber, handler_module}) do
-    apply(handler_module, :added, [subscriber, message])
+  def handle_message(_client_pid, %{"msg" => callback} = message, {subscriber, handler_module}) do
+    apply(handler_module, String.to_existing_atom(callback), [subscriber, message])
   end
 
   def handle_message(_client_pid, message, _state) do
