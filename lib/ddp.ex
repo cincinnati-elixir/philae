@@ -16,6 +16,7 @@ defmodule Philae.DDP do
     {:ok, %{client: client_pid, subscriber: subscriber, handler_module: handler_module, subscriber: subscriber}}
   end
 
+  # Client API
   def connect(url, handler_module, subscriber) do
     start_link(url, handler_module, subscriber)
   end
@@ -26,6 +27,17 @@ defmodule Philae.DDP do
 
   def handle(pid, msg) do
     GenServer.call(pid, {:handle_message, msg})
+  end
+
+  def method(pid, method, args) do
+    GenServer.call(pid, {:method, method, args})
+  end
+
+  # Server API
+
+  def handle_call({:method, method_name, args}, _from, %{:client => client_pid} = state) do
+    send client_pid, {:send, json!(%{msg: "method", method: method_name, params: args, id: id = UUID.uuid4})}
+    {:reply, {:ok, id}, state}
   end
 
   def handle_call({:subscribe, collection}, _from, %{:client => client_pid} = state) do
