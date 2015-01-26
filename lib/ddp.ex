@@ -17,6 +17,7 @@ defmodule Philae.DDP do
   end
 
   # Client API
+
   def connect(url, handler_module, subscriber) do
     start_link(url, handler_module, subscriber)
   end

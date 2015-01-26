@@ -92,9 +92,10 @@ TODO
 - [x] Respond appropriately to Ping and Pong heartbeats
 - [x] Call callback functions on module passed in for incoming messages
 - [x] Send RPC messages via "method" message
+- [x] Implement default behavior for Handler Module callbacks
+- [ ] Make logging optional for DDPHandler behavior
 - [ ] Implement unsub message
 - [ ] Implement Agent for keeping track of subscriptions
 - [ ] Add inline @doc documentation
-- [ ] Look at implementing behavior for Handler Module callbacks
 - [ ] Write some tests!!!
 
