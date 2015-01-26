@@ -88,13 +88,13 @@ iex(2)>
 
 TODO
 ======
-- [*] Subscribe to collections
-- [*] Respond appropriately to Ping and Pong heartbeats
-- [*] Call callback functions on module passed in for incoming messages
-- [*] Send RPC messages via "method" message
-- []  Implement unsub message
-- []  Implement Agent for keeping track of subscriptions
-- []  Add inline @doc documentation
-- []  Look at implementing behavior for Handler Module callbacks
-- []  Write some tests!!!
+- [x] Subscribe to collections
+- [x] Respond appropriately to Ping and Pong heartbeats
+- [x] Call callback functions on module passed in for incoming messages
+- [x] Send RPC messages via "method" message
+- [ ] Implement unsub message
+- [ ] Implement Agent for keeping track of subscriptions
+- [ ] Add inline @doc documentation
+- [ ] Look at implementing behavior for Handler Module callbacks
+- [ ] Write some tests!!!
 
