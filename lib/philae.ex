@@ -12,12 +12,13 @@ defmodule Philae.WebSocketClient do
   end
 
   def websocket_handle({:text, message}, _conn_state, {module, pid}) do
+    Logger.info("WS In: #{message}")
     apply(module, :handle, [pid, message])
     {:ok, {module, pid}}
   end
 
   def websocket_info({:send, message}, _conn_state, {module, pid}) do
-    Logger.info("Out: #{message}")
+    Logger.info("WS Out: #{message}")
     {:reply, {:text, message}, {module, pid}}
   end
 
