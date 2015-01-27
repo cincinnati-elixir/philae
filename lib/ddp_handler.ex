@@ -9,6 +9,10 @@ defmodule DDPHandler do
         log(message)
       end
 
+      def removed(_pid, message) do
+        log(message)
+      end
+
       def changed(_pid, message) do
         log(message)
       end
@@ -26,6 +30,10 @@ defmodule DDPHandler do
       end
 
       def updated(_pid, message) do
+        log(message)
+      end
+
+      def nosub(_pid, message) do
         log(message)
       end
 

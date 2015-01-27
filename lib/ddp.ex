@@ -26,6 +26,10 @@ defmodule Philae.DDP do
     GenServer.call(pid, {:subscribe, collection})
   end
 
+  def unsubscribe(pid, collection_id) do
+    GenServer.call(pid, {:unsubscribe, collection_id})
+  end
+
   def handle(pid, msg) do
     GenServer.call(pid, {:handle_message, msg})
   end
@@ -44,6 +48,11 @@ defmodule Philae.DDP do
   def handle_call({:subscribe, collection}, _from, %{:client => client_pid} = state) do
     {^collection, id} = sub(client_pid, collection)
     {:reply, {collection, id}, state}
+  end
+
+   def handle_call({:unsubscribe, collection_id}, _from, %{:client => client_pid} = state) do
+    send client_pid, {:send, json!(%{msg: "unsub", id: collection_id})}
+    {:reply, {collection_id}, state}
   end
 
   def handle_call({:handle_message, msg}, _from, %{:client => client_pid, :subscriber => subscriber, :handler_module => handler_module} = state) do

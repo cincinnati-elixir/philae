@@ -12,7 +12,6 @@ defmodule Philae.WebSocketClient do
   end
 
   def websocket_handle({:text, message}, _conn_state, {module, pid}) do
-    Logger.info("In: #{message}")
     apply(module, :handle, [pid, message])
     {:ok, {module, pid}}
   end
